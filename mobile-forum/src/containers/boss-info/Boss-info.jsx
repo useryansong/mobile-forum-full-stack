@@ -32,6 +32,7 @@ class BossInfo extends Component {
     }
     render() {
         const {header, type} = this.props.user
+        console.log(header, type)
         if(header) {
             const path = type === 'expert'?'/expert':'boss'
             return <Redirect to={path}></Redirect>

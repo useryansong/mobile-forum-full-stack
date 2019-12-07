@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
     username: { type: String, required: true },//username
     password: { type: String, required: true },//password
     type: { type: String, required: true },
-    headre: { type: String },
+    header: { type: String },
     post: { type: String },
     info: { type: String },
     company: { type: String },

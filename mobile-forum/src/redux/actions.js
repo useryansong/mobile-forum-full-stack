@@ -8,7 +8,8 @@ import {
 import {
     reqRegister,
     reqLogin,
-    reqUpdateUser
+    reqUpdateUser,
+    reqUser
 } from '../api'
 
 //auth success action
@@ -75,6 +76,19 @@ export const updateUser = (user) => {
         if(result.code===0) {//update successfully:data
             dispatch(receiveUser(result.data))
         } else {//failed
+            dispatch(resetUser(result.msg))
+        }
+    }
+}
+
+//get user
+export const getUser = () => {
+    return async dispatch => {
+        const response = await reqUser()
+        const result = response.data
+        if(result.code===0) {
+            dispatch(receiveUser(result.data))
+        } else {
             dispatch(resetUser(result.msg))
         }
     }

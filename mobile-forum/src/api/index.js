@@ -9,3 +9,5 @@ export const reqRegister = (user) => ajax('/register', user, 'POST')
 export const reqLogin = ({username, password}) => ajax('/login', {username,password},'POST')
 //update
 export const reqUpdateUser = (user) => ajax('/update', user, 'POST') 
+//get userinfo
+export const reqUser = () => ajax('/user')

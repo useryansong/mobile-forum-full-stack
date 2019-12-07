@@ -7,6 +7,7 @@ import BossInfo from '../boss-info/Boss-info'
 import ExpertInfo from '../Expert-info/Expert-info'
 
 import {getRedirectTo} from '../../utils'
+import {getUser} from '../../redux/actions'
 
 class Main extends Component {
 
@@ -16,7 +17,7 @@ class Main extends Component {
         const {_id} = this.props.user
         if(userid && !_id) {
             //send request, get info of user
-            console.log('send reqeust, receive user')
+            this.props.getUser()
         }
     }
 
@@ -38,6 +39,7 @@ class Main extends Component {
             let path = this.props.location.pathname
             if( path ==='/') {
               path = getRedirectTo(user.type, user.header)
+              console.log(user.header)
                 return <Redirect to={path}/>
             }
         }
@@ -54,7 +56,8 @@ class Main extends Component {
 }
 
 export default connect(
-    state =>({user:state.user})
+    state =>({user:state.user}),
+    {getUser}
 )(Main)
 /**
  * 1. logIn automatically
