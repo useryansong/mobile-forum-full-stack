@@ -85,5 +85,12 @@ router.get('/user', function (req, res) {
     res.send({code:0, data:user})
   })
 })
+//get user list(according type)
+router.get('/userlist', function (req,res){
+  const {type} = req.query
+  UserModel.find({type}, filter, function (err,users) {
+    res.send({code:0, data:users})
+  })
+})
 
 module.exports = router;
