@@ -19,7 +19,7 @@ const errorMsg = (msg) => ({ type: ERROR_MSG, data: msg })
 //receive user
 const receiveUser = (user) => ({type:RECEIVE_USER,data:user})
 //initial user
-const resetUser = (msg) => ({type:RESET_USER, data: msg})
+export const resetUser = () => ({type:RESET_USER})
 
 export const register = (user) => {
     const { username, password, password2, type } = user

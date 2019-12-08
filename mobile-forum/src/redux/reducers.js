@@ -19,7 +19,7 @@ function user(state=initUser, action) {
         case RECEIVE_USER:
             return action.data
         case RESET_USER:{
-            return {...initUser, msg:action.data}
+            return {...initUser}
         }
         default: return state
     }

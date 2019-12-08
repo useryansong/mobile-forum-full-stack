@@ -11,8 +11,8 @@ export default class HeaderSelector extends Component {
         this.headerList = []
         for (let i = 0; i < 20; i++) {
             this.headerList.push({
-                text: 'image' + (i + 1),
-                icon: require(`./images/header${i + 1}.png`)
+                text: 'header' + (i + 1),
+                icon: require(`../../assets/images/header${i + 1}.png`)
             })
         }
     }
