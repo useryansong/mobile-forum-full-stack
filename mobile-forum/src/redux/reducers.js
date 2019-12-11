@@ -4,7 +4,9 @@ import {
     ERROR_MSG,
     RECEIVE_USER,
     RESET_USER,
-    RECEIVE_USER_LIST
+    RECEIVE_USER_LIST,
+    RECEIVE_MSG_LIST,
+    RECEIVE_MSG
 } from './action-type'
 
 import { getRedirectTo } from '../utils'
@@ -42,8 +44,36 @@ function userList(state = initUserList, action) {
         
 }
 
+const initChat = {
+    users:{},//user info
+    chatMsgs:[],//msg array
+    unReadCount:0 //unread msg 
+}
+//chat state reducer
+function chat(state=initChat, action) {
+    switch (action.type) {
+        case RECEIVE_MSG_LIST: //data:{suers, chatMsgs}
+        const {users,chatMsgs} = action.data
+            return {
+                users,
+                chatMsgs,
+                unReadCount:0
+            }
+        case RECEIVE_MSG://data:chatMsg
+        const chatMsg = action.data
+            return {
+                users: state.users,
+                chatMsgs: [...state.chatMsgs, chatMsg],
+                unReadCount:0
+            }
+        default:
+            return state
+    }
+}
+
 export default combineReducers({
     user,
-    userList
+    userList,
+    chat
 })
 

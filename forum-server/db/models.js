@@ -32,3 +32,17 @@ const UserModel = mongoose.model('user', userSchema)
 
 //export Moel
 exports.UserModel = UserModel
+
+//define Schema
+const chatSchema = mongoose.Schema({
+    from: {type: String, required: true}, // send id of user
+    to: {type: String, required: true}, //receive userid
+    chat_id: {type: String, required: true}, // string made by from and to 
+    content: {type: String, required: true}, // content
+    read: {type:Boolean, default: false}, // if read
+    create_time: {type: Number} // create time
+    })
+    // define Model
+const ChatModel = mongoose.model('chat', chatSchema)
+    // export Model
+exports.ChatModel = ChatModel

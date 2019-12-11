@@ -7,6 +7,8 @@ import Main from './containers/main/Main';
 
 import './assets/css/index.less'
 
+import './test/socketio_test'
+
 class App extends Component {
 
     render() {

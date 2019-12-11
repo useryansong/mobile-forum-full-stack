@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const md5 = require('blueimp-md5')
-const { UserModel } = require('../db/models')
+const { UserModel,ChatModel } = require('../db/models')
 const filter={password:0}
 
 /* GET home page. */
@@ -32,6 +32,7 @@ router.post('/register', function (req, res) {
     }
   })
 })
+
 //login router
 router.post('/login', function (req, res) {
   const { username, password } = req.body
@@ -48,6 +49,7 @@ router.post('/login', function (req, res) {
     }
   })
 })
+
 //update user info
 router.post('/update', function (req, res) {
   //get userid from cookie
@@ -73,6 +75,7 @@ router.post('/update', function (req, res) {
     }
   })
 })
+
 //get user info(according the userid of cookie)
 router.get('/user', function (req, res) {
     //get userid from cookie
@@ -92,5 +95,44 @@ router.get('/userlist', function (req,res){
     res.send({code:0, data:users})
   })
 })
+
+/*
+get all chat info of current user
+ */
+router.get('/msglist', function (req, res) {
+  // userid get userid from cookie
+  const userid = req.cookies.userid
+  //query all docs of user
+  UserModel.find(function (err, userDocs) {
+    //save user info in object: key is the _id of user
+    const users = userDocs.reduce((users, user) => {
+      users[user._id] = {username: user.username, header: user.header}
+      return users
+    } , {})
+    /*query all chat using userid
+    */
+    ChatModel.find({'$or': [{from: userid}, {to: userid}]}, filter, function (err, chatMsgs) {
+      //return all chat between current user and other users
+      res.send({code: 0, data: {users, chatMsgs}})
+    })
+  })
+})
+
+/*
+modified msg to read
+ */
+router.post('/readmsg', function (req, res) {
+  // get from and to in request
+  const from = req.body.from
+  const to = req.cookies.userid
+  /*
+update chat in database
+   */
+  ChatModel.update({from, to, read: false}, {read: true}, {multi: true}, function (err, doc) {
+    console.log('/readmsg', doc)
+    res.send({code: 0, data: doc.nModified}) //update count
+  })
+})
+
 
 module.exports = router;
