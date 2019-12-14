@@ -6,7 +6,8 @@ import {
     RESET_USER,
     RECEIVE_USER_LIST,
     RECEIVE_MSG_LIST,
-    RECEIVE_MSG
+    RECEIVE_MSG,
+    MSG_READ
 } from './action-type'
 
 import { getRedirectTo } from '../utils'
@@ -41,30 +42,48 @@ function userList(state = initUserList, action) {
             return action.data
         default: return state
     }
-        
+
 }
 
 const initChat = {
-    users:{},//user info
-    chatMsgs:[],//msg array
-    unReadCount:0 //unread msg 
+    users: {},//user info
+    chatMsgs: [],//msg array
+    unReadCount: 0 //unread msg 
 }
 //chat state reducer
-function chat(state=initChat, action) {
+function chat(state = initChat, action) {
     switch (action.type) {
         case RECEIVE_MSG_LIST: //data:{suers, chatMsgs}
-        const {users,chatMsgs} = action.data
+            const { users, chatMsgs,userid } = action.data
             return {
                 users,
                 chatMsgs,
-                unReadCount:0
+                unReadCount: chatMsgs.reduce((preTotal, msg) => preTotal+(!msg.read&&msg.to===userid?1:0),0)
             }
         case RECEIVE_MSG://data:chatMsg
-        const chatMsg = action.data
+            const {chatMsg} = action.data
             return {
                 users: state.users,
                 chatMsgs: [...state.chatMsgs, chatMsg],
-                unReadCount:0
+                unReadCount: state.unReadCount + (!chatMsg.read&&chatMsg.to===action.data.userid?1:0)
+            }
+        case MSG_READ:
+            const { from, to, count } = action.data
+            state.chatMsgs.forEach(msg => {
+                if (msg.from === from && msg.to === to && !msg.read) {
+                    msg.read = true
+                }
+            })
+            return {
+                users: state.users,
+                chatMsgs: state.chatMsgs.map(msg => {
+                    if (msg.from === from && msg.to === to && !msg.read) { // update
+                        return { ...msg, read: true }
+                    } else {// not update
+                        return msg
+                    }
+                }),
+                unReadCount: state.unReadCount - count
             }
         default:
             return state

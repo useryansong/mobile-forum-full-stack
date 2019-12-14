@@ -7,7 +7,7 @@ const Item = TabBar.Item
 class NavFooter extends Component {
 
     render() {
-        let {navList}=this.props
+        let {navList, unReadCount}=this.props
         navList = navList.filter(nav => !nav.hide)
         const path =this.props.location.pathname
         return (
@@ -16,6 +16,7 @@ class NavFooter extends Component {
                     navList.map((nav) => (
                         <Item key={nav.icon}
                             title={nav.text}
+                            badge = {nav.path==='/message'? unReadCount: 0}
                             icon={{uri:require(`./images/${nav.icon}.png`)}}
                             selectedIcon={{uri:require(`./images/${nav.icon}-selected.png`)}}
                             selected={path===nav.path}

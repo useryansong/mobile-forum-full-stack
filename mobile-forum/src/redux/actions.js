@@ -7,7 +7,8 @@ import {
     RESET_USER,
     RECEIVE_USER_LIST,
     RECEIVE_MSG_LIST,
-    RECEIVE_MSG
+    RECEIVE_MSG,
+    MSG_READ
 } from './action-type'
 import {
     reqRegister,
@@ -36,9 +37,11 @@ export const resetUser = (msg) => ({ type: RESET_USER, data: msg })
 //receive userlist
 export const receiveUserList = (userList) => ({ type: RECEIVE_USER_LIST, data: userList })
 //get user chat info
-export const receiveMsgList = ({users, chatMsgs}) => ({type:RECEIVE_MSG_LIST,data:{users, chatMsgs}})
+export const receiveMsgList = ({users, chatMsgs, userid}) => ({type:RECEIVE_MSG_LIST,data:{users, chatMsgs, userid}})
 //receive one msg
-const receiveMsg = (chatMsg) => ({type:RECEIVE_MSG, data:chatMsg})
+const receiveMsg = (chatMsg, userid) => ({type:RECEIVE_MSG, data:{chatMsg, userid}})
+//has read msg
+const msgRead = ({count, from, to}) => ({type: MSG_READ, data: {count, from, to}})
 
 
 function initIO(dispatch, userid) {
@@ -48,7 +51,7 @@ function initIO(dispatch, userid) {
         // receice the msg from server
         io.socket.on('receiveMsg', function (chatMsg) {
             if (userid === chatMsg.from || userid === chatMsg.to) {
-                dispatch(receiveMsg(chatMsg))
+                dispatch(receiveMsg(chatMsg, userid))
             }
         })
     }
@@ -61,7 +64,7 @@ async function getMsgList(dispatch, userid) {
     const result = response.data
     if(result.code === 0) {
         const {users, chatMsgs} = result.data
-        dispatch(receiveMsgList({users, chatMsgs}))
+        dispatch(receiveMsgList({users, chatMsgs, userid}))
     }
 }
 
@@ -75,6 +78,18 @@ export const sendMsg = ({ from, to, content }) => {
     }
 }
 
+//READ MSG
+export const readMsg = (from, to) => {
+    return async dispatch => {
+      const response = await reqReadMsg(from)
+      const result = response.data
+      if(result.code===0) {
+        const count = result.data
+        dispatch(msgRead({count, from, to}))
+      }
+    }
+  }
+  
 
 
 export const register = (user) => {
