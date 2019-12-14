@@ -27,12 +27,12 @@ class Chat extends Component {
         window.scrollTo(0, document.body.scrollHeight)
     }
 
-    componentWillUnmount () { // before logout
+    componentWillUnmount() { // before logout
         //request update unread msg
         const from = this.props.match.params.userid
         const to = this.props.user._id
         this.props.readMsg(from, to)
-      }
+    }
 
     toggleShow = () => {
         const isShow = !this.state.isShow
@@ -88,30 +88,30 @@ class Chat extends Component {
                 </NavBar>
                 <List style={{ marginTop: 50, marginBottom: 50 }}>
                     <QueueAnim type='left' delay={100}>
-                    {
-                        msgs.map(msg => {
-                            if (meId === msg.to) {//send to me
-                                return (
-                                    <Item
-                                        key={msg._id}
-                                        thumb={targetIcon}
-                                    >
-                                        {msg.content}
-                                    </Item>)
-                            } else { // I send to
-                                return (
-                                    <Item
-                                        key={msg._id}
-                                        className='chat-me'
-                                        extra='me'
-                                    >
-                                        {msg.content}
-                                    </Item>
-                                )
-                            }
-                        })
-                    }
-                    </QueueAnim>  
+                        {
+                            msgs.map(msg => {
+                                if (meId === msg.to) {//send to me
+                                    return (
+                                        <Item
+                                            key={msg._id}
+                                            thumb={targetIcon}
+                                        >
+                                            {msg.content}
+                                        </Item>)
+                                } else { // I send to
+                                    return (
+                                        <Item
+                                            key={msg._id}
+                                            className='chat-me'
+                                            extra='me'
+                                        >
+                                            {msg.content}
+                                        </Item>
+                                    )
+                                }
+                            })
+                        }
+                    </QueueAnim>
                 </List>
                 <div className='am-tab-bar'>
                     <InputItem
