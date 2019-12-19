@@ -87,8 +87,7 @@ class Chat extends Component {
                     {users[targetId].username}
                 </NavBar>
                 <List style={{ marginTop: 50, marginBottom: 50 }}>
-                    <QueueAnim type='left' delay={100}>
-                        {
+                {
                             msgs.map(msg => {
                                 if (meId === msg.to) {//send to me
                                     return (
@@ -111,7 +110,6 @@ class Chat extends Component {
                                 }
                             })
                         }
-                    </QueueAnim>
                 </List>
                 <div className='am-tab-bar'>
                     <InputItem

@@ -12,8 +12,8 @@ class UserList extends Component {
         const { userList } = this.props
         return (
             <WingBlank style={{ marginBottom: 50, marginTop: 45 }}>
-                <QueueAnim type='scale'>
-                    {
+                {/* <QueueAnim type='scale'></QueueAnim> */}
+                {
                         userList.map(user => (
                             <div key={user._id}>
                                 <WhiteSpace />
@@ -32,7 +32,6 @@ class UserList extends Component {
                             </div>
                         ))
                     }
-                </QueueAnim>
             </WingBlank>
         )
     }
